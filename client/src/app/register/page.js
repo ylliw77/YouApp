@@ -1,20 +1,42 @@
-export default function RegisterPage() {
-    return (
-      <>
-      <div className="flex h-screen flex-col justify-center align-middle px-6 py-12 bg-gradient-to-bl from-[#254f55] to-[#0E191F]">
+"use client";
+
+import { NextResponse } from "next/server";
+import createUser from "../api/register/route";
+import createUserProfile from "../api/createProfile/route";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+export default function RegisterPage(e) {
+  const [user, setUser] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const {name, value} = e.target
+    setUser({...user, [name] : value} )
+  }
+  const navigate = useRouter()
+
+  const handleClick = () => {
+    navigate.push('/profile')
+  }
+
+  return (
+    <>
+      <div className="flex h-screen flex-col justify-center align-middle px-6 py-12 bg-gradient-to-br from-[#1C3C41] to-[#0C1A20]">
         <h2 className="text-3xl font-medium tracking-tight text-white pl-3">
           Register
         </h2>
 
         <div className="mt-3">
-          <form className="space-y-3" action="#" method="POST">
+          <form className="space-y-3" action={createUser(user)}>
             <div>
               <div className="mt-2 bg-[#253D43] rounded-lg">
                 <input
-                  id="email"
+                 onChange={handleChange}
                   name="email"
                   type="email"
-                 
                   placeholder="Enter Email"
                   required=""
                   className="block w-full rounded-md border-0 py-2 text-white shadow-sm bg-[#253D43] placeholder:text-xs px-2"
@@ -24,7 +46,8 @@ export default function RegisterPage() {
             <div>
               <div className="mt-2 bg-[#253D43] rounded-lg">
                 <input
-                  id="username"
+                
+                  onChange={handleChange}
                   name="username"
                   type="text"
                   placeholder="Enter Username"
@@ -38,6 +61,7 @@ export default function RegisterPage() {
               <div className="mt-2 rounded-lg bg-[#253D43]">
                 <input
                   id="password"
+                  onChange={handleChange}
                   name="password"
                   type="password"
                   placeholder="Enter Password"
@@ -72,6 +96,7 @@ export default function RegisterPage() {
               <div className="mt-2 rounded-lg bg-[#253D43]">
                 <input
                   id="password"
+                
                   name="password"
                   type="password"
                   placeholder="Enter Password"
@@ -105,8 +130,8 @@ export default function RegisterPage() {
             <div>
               <button
                 type="submit"
+                onClick={handleClick}
                 className="flex w-full justify-center rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 px-3 py-1.5 text-md font-semibold leading-6 text-white shadow-[0_15px_50px_rgba(8,_112,_184,_0.7)]"
-              
               >
                 Register
               </button>
@@ -114,16 +139,12 @@ export default function RegisterPage() {
           </form>
           <p className="mt-10 text-center text-xs text-white">
             Have an account?
-            <a
-              href="/login"
-              className="font-medium underline text-[#FDE0BB]"
-            >
+            <a href="/" className="font-medium underline text-[#FDE0BB]">
               Login here
             </a>
           </p>
         </div>
       </div>
-      </>
-    );
-  }
-  
+    </>
+  );
+}
